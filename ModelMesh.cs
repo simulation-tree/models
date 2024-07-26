@@ -4,9 +4,9 @@ namespace Models
 {
     public readonly struct ModelMesh
     {
-        public readonly EntityID value;
+        public readonly eint value;
 
-        public ModelMesh(EntityID value)
+        public ModelMesh(eint value)
         {
             this.value = value;
         }
