@@ -1,15 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>disable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<PublishAot>true</PublishAot>
+		<NoStdLib>true</NoStdLib>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\data\Data.csproj" />
-    <ProjectReference Include="..\meshes\source\Meshes.csproj" />
-    <ProjectReference Include="..\simulation\source\Simulation.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\data\Data.csproj" />
+		<ProjectReference Include="..\meshes\source\Meshes.csproj" />
+		<ProjectReference Include="..\simulation\source\Simulation.csproj" />
+	</ItemGroup>
 
 </Project>
