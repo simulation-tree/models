@@ -37,6 +37,18 @@ namespace Models
             world.Poll();
         }
 
+        public Model(World world, FixedString address)
+        {
+            entity = new(world);
+            entity.AddComponent(new IsDataRequest(address));
+            entity.AddComponent(new IsModel());
+            entity.CreateList<Entity, ModelMesh>();
+
+            world.Submit(new DataUpdate());
+            world.Submit(new ModelUpdate());
+            world.Poll();
+        }
+
         public readonly void Dispose()
         {
             entity.Dispose();
