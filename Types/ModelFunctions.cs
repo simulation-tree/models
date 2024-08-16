@@ -1,5 +1,6 @@
 ﻿using Meshes;
 using Models;
+using System;
 
 public static class ModelFunctions
 {
@@ -10,7 +11,8 @@ public static class ModelFunctions
 
     public static Mesh GetMesh<T>(this T model, uint index) where T : unmanaged, IModel
     {
-        ModelMesh mesh = model.GetList<T, ModelMesh>()[index];
+        ReadOnlySpan<ModelMesh> meshList = model.GetList<T, ModelMesh>().AsSpan();
+        ModelMesh mesh = meshList[(int)index];
         return new(model.World, mesh.value);
     }
 }
