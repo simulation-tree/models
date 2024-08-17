@@ -1,5 +1,6 @@
 ﻿using Data.Components;
 using Data.Events;
+using Meshes;
 using Models.Components;
 using Models.Events;
 using Simulation;
@@ -30,7 +31,7 @@ namespace Models
             entity = new(world);
             entity.AddComponent(new IsDataRequest(address));
             entity.AddComponent(new IsModel());
-            entity.CreateList<Entity, ModelMesh>();
+            entity.CreateList<ModelMesh>();
 
             world.Submit(new DataUpdate());
             world.Submit(new ModelUpdate());
@@ -42,7 +43,7 @@ namespace Models
             entity = new(world);
             entity.AddComponent(new IsDataRequest(address));
             entity.AddComponent(new IsModel());
-            entity.CreateList<Entity, ModelMesh>();
+            entity.CreateList<ModelMesh>();
 
             world.Submit(new DataUpdate());
             world.Submit(new ModelUpdate());
@@ -58,10 +59,27 @@ namespace Models
         {
             return entity.ToString();
         }
-        
+
         Query IEntity.GetQuery(World world)
         {
             return new(world, RuntimeType.Get<IsModel>());
+        }
+
+        public readonly uint GetMeshCount()
+        {
+            return entity.GetList<ModelMesh>().Count;
+        }
+
+        public readonly Mesh GetMesh(uint index)
+        {
+            ReadOnlySpan<ModelMesh> meshList = entity.GetList<ModelMesh>().AsSpan();
+            ModelMesh mesh = meshList[(int)index];
+            return new(entity.world, mesh.value);
+        }
+
+        public static implicit operator Entity(Model model)
+        {
+            return model.entity;
         }
     }
 }
