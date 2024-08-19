@@ -1,6 +1,6 @@
 ﻿namespace Models.Components
 {
-    public struct IsModel
+    public struct IsModelRequest
     {
         public uint version;
     }
