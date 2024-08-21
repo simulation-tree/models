@@ -18,12 +18,12 @@ namespace Models
             {
                 ModelMesh mesh = entity.GetListElement<ModelMesh>(index);
                 eint meshEntity = entity.GetReference(mesh.value);
-                return new(entity.world, meshEntity);
+                return new(entity, meshEntity);
             }
         }
 
-        World IEntity.World => entity.world;
-        eint IEntity.Value => entity.value;
+        World IEntity.World => entity;
+        eint IEntity.Value => entity;
 
 #if NET
         [Obsolete("Default constructor not available", true)]
