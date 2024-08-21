@@ -7,11 +7,10 @@ using Unmanaged;
 
 namespace Models
 {
-    public readonly struct Model : IModel, IDisposable
+    public readonly struct Model : IEntity, IDisposable
     {
         private readonly Entity entity;
 
-        public readonly bool IsLoaded => entity.ContainsComponent<IsModel>();
         public readonly uint MeshCount => entity.GetList<ModelMesh>().Count;
         public readonly Mesh this[uint index]
         {
