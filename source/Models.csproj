@@ -11,9 +11,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\data\source\Data.csproj" />
-		<ProjectReference Include="..\meshes\source\Meshes.csproj" />
-		<ProjectReference Include="..\simulation\source\Simulation.csproj" />
+		<ProjectReference Include="..\..\data\source\Data.csproj" />
+		<ProjectReference Include="..\..\meshes\source\Meshes.csproj" />
+		<ProjectReference Include="..\..\simulation\source\Simulation.csproj" />
 	</ItemGroup>
 
 </Project>
