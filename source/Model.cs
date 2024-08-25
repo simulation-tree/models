@@ -11,12 +11,12 @@ namespace Models
     {
         private readonly Entity entity;
 
-        public readonly uint MeshCount => entity.GetList<ModelMesh>().Count;
+        public readonly uint MeshCount => entity.GetArrayLength<ModelMesh>();
         public readonly Mesh this[uint index]
         {
             get
             {
-                ModelMesh mesh = entity.GetListElement<ModelMesh>(index);
+                ModelMesh mesh = entity.GetArrayElement<ModelMesh>(index);
                 eint meshEntity = entity.GetReference(mesh.value);
                 return new Entity(entity, meshEntity).As<Mesh>();
             }
