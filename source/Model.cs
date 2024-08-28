@@ -7,7 +7,7 @@ using Unmanaged;
 
 namespace Models
 {
-    public readonly struct Model : IEntity, IDisposable
+    public readonly struct Model : IEntity
     {
         private readonly Entity entity;
 
@@ -50,11 +50,6 @@ namespace Models
             entity = new(world);
             entity.AddComponent(new IsDataRequest(address));
             entity.AddComponent(new IsModelRequest());
-        }
-
-        public readonly void Dispose()
-        {
-            entity.Dispose();
         }
 
         public readonly override string ToString()
