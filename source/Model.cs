@@ -17,13 +17,13 @@ namespace Models
             get
             {
                 ModelMesh mesh = entity.GetArrayElement<ModelMesh>(index);
-                eint meshEntity = entity.GetReference(mesh.value);
+                uint meshEntity = entity.GetReference(mesh.value);
                 return new Entity(entity, meshEntity).As<Mesh>();
             }
         }
 
         World IEntity.World => entity;
-        eint IEntity.Value => entity;
+        uint IEntity.Value => entity;
 
 #if NET
         [Obsolete("Default constructor not available", true)]
@@ -33,7 +33,7 @@ namespace Models
         }
 #endif
 
-        public Model(World world, eint existingEntity)
+        public Model(World world, uint existingEntity)
         {
             entity = new(world, existingEntity);
         }
