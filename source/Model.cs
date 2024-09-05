@@ -9,7 +9,7 @@ namespace Models
 {
     public readonly struct Model : IEntity
     {
-        private readonly Entity entity;
+        public readonly Entity entity;
 
         public readonly uint MeshCount => entity.GetArrayLength<ModelMesh>();
         public readonly Mesh this[uint index]
@@ -18,12 +18,13 @@ namespace Models
             {
                 ModelMesh mesh = entity.GetArrayElementRef<ModelMesh>(index);
                 uint meshEntity = entity.GetReference(mesh.value);
-                return new Entity(entity, meshEntity).As<Mesh>();
+                return new Entity(entity.world, meshEntity).As<Mesh>();
             }
         }
 
-        World IEntity.World => entity;
-        uint IEntity.Value => entity;
+        readonly World IEntity.World => entity.world;
+        readonly uint IEntity.Value => entity.value;
+        readonly Definition IEntity.Definition => new([RuntimeType.Get<IsModel>()], [RuntimeType.Get<ModelMesh>()]);
 
 #if NET
         [Obsolete("Default constructor not available", true)]
@@ -38,7 +39,14 @@ namespace Models
             entity = new(world, existingEntity);
         }
 
-        public Model(World world, ReadOnlySpan<char> address)
+        public Model(World world, USpan<char> address)
+        {
+            entity = new(world);
+            entity.AddComponent(new IsDataRequest(address));
+            entity.AddComponent(new IsModelRequest());
+        }
+
+        public Model(World world, string address)
         {
             entity = new(world);
             entity.AddComponent(new IsDataRequest(address));
@@ -55,16 +63,6 @@ namespace Models
         public readonly override string ToString()
         {
             return entity.ToString();
-        }
-
-        Query IEntity.GetQuery(World world)
-        {
-            return new(world, RuntimeType.Get<IsModel>());
-        }
-
-        public static implicit operator Entity(Model model)
-        {
-            return model.entity;
         }
     }
 }
