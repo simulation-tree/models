@@ -24,7 +24,7 @@ namespace Models
 
         readonly World IEntity.World => entity.world;
         readonly uint IEntity.Value => entity.value;
-        readonly Definition IEntity.Definition => new([RuntimeType.Get<IsModel>()], [RuntimeType.Get<ModelMesh>()]);
+        readonly Definition IEntity.Definition => new Definition().AddComponentType<IsModel>().AddArrayType<ModelMesh>();
 
 #if NET
         [Obsolete("Default constructor not available", true)]
@@ -63,6 +63,11 @@ namespace Models
         public readonly override string ToString()
         {
             return entity.ToString();
+        }
+
+        public static implicit operator Entity(Model model)
+        {
+            return model.entity;
         }
     }
 }
