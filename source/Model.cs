@@ -60,6 +60,11 @@ namespace Models
             entity.AddComponent(new IsModelRequest());
         }
 
+        public readonly void Dispose()
+        {
+            entity.Dispose();
+        }
+
         public readonly override string ToString()
         {
             return entity.ToString();
