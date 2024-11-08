@@ -43,21 +43,49 @@ namespace Models
         {
             entity = new(world);
             entity.AddComponent(new IsDataRequest(address));
-            entity.AddComponent(new IsModelRequest());
+
+            if (address.TryLastIndexOf('.', out uint extensionIndex))
+            {
+                USpan<char> extension = address.Slice(extensionIndex + 1);
+                entity.AddComponent(new IsModelRequest(extension));
+            }
+            else
+            {
+                entity.AddComponent(new IsModelRequest([]));
+            }
         }
 
         public Model(World world, string address)
         {
             entity = new(world);
             entity.AddComponent(new IsDataRequest(address));
-            entity.AddComponent(new IsModelRequest());
+
+            int extensionIndex = address.LastIndexOf('.');
+            if (extensionIndex != -1)
+            {
+                ReadOnlySpan<char> extension = address.AsSpan().Slice(extensionIndex + 1);
+                entity.AddComponent(new IsModelRequest(extension));
+            }
+            else
+            {
+                entity.AddComponent(new IsModelRequest(""));
+            }
         }
 
         public Model(World world, FixedString address)
         {
             entity = new(world);
             entity.AddComponent(new IsDataRequest(address));
-            entity.AddComponent(new IsModelRequest());
+
+            if (address.TryLastIndexOf('.', out uint extensionIndex))
+            {
+                FixedString extension = address.Slice(extensionIndex + 1);
+                entity.AddComponent(new IsModelRequest(extension));
+            }
+            else
+            {
+                entity.AddComponent(new IsModelRequest([]));
+            }
         }
 
         public readonly void Dispose()

@@ -1,7 +1,107 @@
-﻿namespace Models.Components
+﻿using System;
+using System.Diagnostics;
+using Unmanaged;
+
+namespace Models.Components
 {
     public struct IsModelRequest
     {
         public uint version;
+        public ulong extension;
+
+        public readonly FixedString Extension
+        {
+            get
+            {
+                USpan<char> chars = stackalloc char[8]; 
+                for (int i = 0; i < chars.Length; i++)
+                {
+                    char c = (char)((extension >> (i * 8)) & 0xFF);
+                    if (c == default)
+                    {
+                        return new FixedString(chars.Slice(0, (uint)i));
+                    }
+
+                    chars[(uint)i] = c;
+                }
+
+                return new FixedString(chars);
+            }
+        }
+
+        [Obsolete("Default constructor not supported", true)]
+        public IsModelRequest()
+        {
+            throw new NotSupportedException();
+        }
+
+        public IsModelRequest(USpan<char> extension)
+        {
+            ThrowIfExtensionIsTooLong(extension);
+
+            this.version = default;
+            this.extension = default;
+            for (int i = 0; i < extension.Length; i++)
+            {
+                this.extension |= (ulong)extension[(uint)i] << (i * 8);
+            }
+        }
+
+        public IsModelRequest(FixedString extension)
+        {
+            ThrowIfExtensionIsTooLong(extension.ToString().AsUSpan());
+
+            this.version = default;
+            this.extension = default;
+            for (int i = 0; i < extension.Length; i++)
+            {
+                this.extension |= (ulong)extension[(uint)i] << (i * 8);
+            }
+        }
+
+        public IsModelRequest(string extension) : this(extension.AsUSpan())
+        {
+        }
+
+        public readonly uint CopyExtensionBytes(USpan<byte> destination)
+        {
+            for (int i = 0; i < destination.Length; i++)
+            {
+                byte b = (byte)((extension >> (i * 8)) & 0xFF);
+                if (b == default)
+                {
+                    return (uint)i;
+                }
+
+                destination[(uint)i] = b;
+            }
+
+            return default;
+        }
+
+        public readonly uint CopyExtensionCharacters(USpan<char> destination)
+        {
+            for (int i = 0; i < destination.Length; i++)
+            {
+                char c = (char)((extension >> (i * 8)) & 0xFF);
+                if (c == default)
+                {
+                    return (uint)i;
+                }
+
+                destination[(uint)i] = c;
+            }
+
+            return default;
+        }
+
+        [Conditional("DEBUG")]
+        private static void ThrowIfExtensionIsTooLong(USpan<char> extension)
+        {
+            if (extension.Length > sizeof(ulong))
+            {
+                throw new ArgumentException("Extension is too long", nameof(extension));
+            }
+        }
     }
 }
