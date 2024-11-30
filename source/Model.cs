@@ -1,15 +1,15 @@
 ﻿using Data.Components;
 using Meshes;
 using Models.Components;
-using Simulation;
 using System;
 using Unmanaged;
+using Worlds;
 
 namespace Models
 {
     public readonly struct Model : IEntity
     {
-        public readonly Entity entity;
+        private readonly Entity entity;
 
         public readonly uint MeshCount => entity.GetArrayLength<ModelMesh>();
         public readonly Mesh this[uint index]

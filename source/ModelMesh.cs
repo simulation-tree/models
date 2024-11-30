@@ -1,7 +1,8 @@
-﻿using Simulation;
+﻿using Worlds;
 
 namespace Models
 {
+    [Array]
     public readonly struct ModelMesh
     {
         public readonly rint value;
