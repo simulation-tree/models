@@ -16,7 +16,7 @@ namespace Models
         {
             get
             {
-                ModelMesh mesh = entity.GetArrayElementRef<ModelMesh>(index);
+                ModelMesh mesh = entity.GetArrayElement<ModelMesh>(index);
                 uint meshEntity = entity.GetReference(mesh.value);
                 return new Entity(entity.world, meshEntity).As<Mesh>();
             }
