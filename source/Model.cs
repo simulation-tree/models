@@ -24,7 +24,11 @@ namespace Models
 
         readonly World IEntity.World => entity.world;
         readonly uint IEntity.Value => entity.value;
-        readonly Definition IEntity.Definition => new Definition().AddComponentType<IsModel>().AddArrayType<ModelMesh>();
+
+        readonly Definition IEntity.GetDefinition(Schema schema)
+        {
+            return new Definition().AddComponentType<IsModel>(schema).AddArrayType<ModelMesh>(schema);
+        }
 
 #if NET
         [Obsolete("Default constructor not available", true)]
