@@ -27,7 +27,7 @@ namespace Models
 
         readonly Definition IEntity.GetDefinition(Schema schema)
         {
-            return new Definition().AddComponentType<IsModel>(schema).AddArrayType<ModelMesh>(schema);
+            return new Definition().AddComponentType<IsModel>(schema).AddArrayElementType<ModelMesh>(schema);
         }
 
 #if NET

@@ -2,7 +2,7 @@
 
 namespace Models
 {
-    [Array]
+    [ArrayElement]
     public readonly struct ModelMesh
     {
         public readonly rint value;
