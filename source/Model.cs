@@ -1,4 +1,5 @@
-﻿using Data.Components;
+﻿using Data;
+using Data.Components;
 using Meshes;
 using Models.Components;
 using System;
@@ -43,53 +44,15 @@ namespace Models
             entity = new(world, existingEntity);
         }
 
-        public Model(World world, USpan<char> address)
+        public Model(World world, Address address)
         {
-            entity = new(world);
-            entity.AddComponent(new IsDataRequest(address));
+            FixedString extension = default;
+            if (address.value.TryLastIndexOf('.', out uint extensionIndex))
+            {
+                extension = address.value.Slice(extensionIndex + 1);
+            }
 
-            if (address.TryLastIndexOf('.', out uint extensionIndex))
-            {
-                USpan<char> extension = address.Slice(extensionIndex + 1);
-                entity.AddComponent(new IsModelRequest(extension));
-            }
-            else
-            {
-                entity.AddComponent(new IsModelRequest([]));
-            }
-        }
-
-        public Model(World world, string address)
-        {
-            entity = new(world);
-            entity.AddComponent(new IsDataRequest(address));
-
-            int extensionIndex = address.LastIndexOf('.');
-            if (extensionIndex != -1)
-            {
-                ReadOnlySpan<char> extension = address.AsSpan().Slice(extensionIndex + 1);
-                entity.AddComponent(new IsModelRequest(extension));
-            }
-            else
-            {
-                entity.AddComponent(new IsModelRequest(""));
-            }
-        }
-
-        public Model(World world, FixedString address)
-        {
-            entity = new(world);
-            entity.AddComponent(new IsDataRequest(address));
-
-            if (address.TryLastIndexOf('.', out uint extensionIndex))
-            {
-                FixedString extension = address.Slice(extensionIndex + 1);
-                entity.AddComponent(new IsModelRequest(extension));
-            }
-            else
-            {
-                entity.AddComponent(new IsModelRequest([]));
-            }
+            entity = new Entity<IsDataRequest, IsModelRequest>(world, new(address), new(extension));
         }
 
         public readonly void Dispose()
