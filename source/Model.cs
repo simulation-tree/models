@@ -26,9 +26,10 @@ namespace Models
         readonly World IEntity.World => entity.world;
         readonly uint IEntity.Value => entity.value;
 
-        readonly Definition IEntity.GetDefinition(Schema schema)
+        readonly void IEntity.Describe(ref Archetype archetype)
         {
-            return new Definition().AddComponentType<IsModel>(schema).AddArrayElementType<ModelMesh>(schema);
+            archetype.AddComponentType<IsModel>();
+            archetype.AddArrayElementType<ModelMesh>();
         }
 
 #if NET
