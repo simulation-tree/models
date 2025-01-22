@@ -51,7 +51,7 @@ namespace Models.Components
 
         public IsModelRequest(FixedString extension)
         {
-            ThrowIfExtensionIsTooLong(extension.ToString().AsUSpan());
+            ThrowIfExtensionIsTooLong(extension.ToString().AsSpan());
 
             this.version = default;
             this.extension = default;
@@ -61,7 +61,7 @@ namespace Models.Components
             }
         }
 
-        public IsModelRequest(string extension) : this(extension.AsUSpan())
+        public IsModelRequest(string extension) : this(extension.AsSpan())
         {
         }
 
