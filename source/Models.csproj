@@ -9,6 +9,10 @@
 		<IsTrimmable>True</IsTrimmable>
 		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
 		<WarningLevel>8</WarningLevel>
+		<Authors>popcron</Authors>
+		<Company>game-simulations</Company>
+		<Title>Models</Title>
+		<RepositoryUrl>https://github.com/game-simulations/models</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>

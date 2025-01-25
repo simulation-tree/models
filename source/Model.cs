@@ -40,11 +40,9 @@ namespace Models
         }
 #endif
 
-        public Model(World world, uint existingEntity)
-        {
-            entity = new(world, existingEntity);
-        }
-
+        /// <summary>
+        /// Creates a request to load a model from the given <paramref name="address"/>.
+        /// </summary>
         public Model(World world, Address address)
         {
             FixedString extension = default;
@@ -54,6 +52,19 @@ namespace Models
             }
 
             entity = new Entity<IsDataRequest, IsModelRequest>(world, new(address), new(extension));
+        }
+
+        /// <summary>
+        /// Creates a model with the given <paramref name="meshes"/>.
+        /// </summary>
+        public Model(World world, USpan<Mesh> meshes)
+        {
+            entity = new Entity<IsModel>(world);
+            USpan<ModelMesh> array = entity.CreateArray<ModelMesh>(meshes.Length);
+            for (uint i = 0; i < meshes.Length; i++)
+            {
+                array[i] = new(entity.AddReference(meshes[i]));
+            }
         }
 
         public readonly void Dispose()
