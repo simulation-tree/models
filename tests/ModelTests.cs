@@ -8,13 +8,13 @@ namespace Models.Tests
     {
         static ModelTests()
         {
-            TypeRegistry.Load<Models.TypeBank>();
+            TypeRegistry.Load<ModelsTypeBank>();
         }
 
         protected override Schema CreateSchema()
         {
             Schema schema = base.CreateSchema();
-            schema.Load<Models.SchemaBank>();
+            schema.Load<ModelsSchemaBank>();
             return schema;
         }
     }
