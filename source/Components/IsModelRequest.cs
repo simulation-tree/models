@@ -8,14 +8,17 @@ namespace Models.Components
     [Component]
     public struct IsModelRequest
     {
-        public uint version;
-        public ulong extension;
+        public readonly ulong extension;
+        public FixedString address;
+        public TimeSpan timeout;
+        public TimeSpan duration;
+        public Status status;
 
         public readonly FixedString Extension
         {
             get
             {
-                USpan<char> chars = stackalloc char[8]; 
+                USpan<char> chars = stackalloc char[8];
                 for (int i = 0; i < chars.Length; i++)
                 {
                     char c = (char)((extension >> (i * 8)) & 0xFF);
@@ -37,32 +40,47 @@ namespace Models.Components
             throw new NotSupportedException();
         }
 
-        public IsModelRequest(USpan<char> extension)
+        public IsModelRequest(USpan<char> extension, FixedString address, TimeSpan timeout)
         {
             ThrowIfExtensionIsTooLong(extension);
 
-            this.version = default;
             this.extension = default;
             for (int i = 0; i < extension.Length; i++)
             {
                 this.extension |= (ulong)extension[(uint)i] << (i * 8);
             }
+
+            this.address = address;
+            this.timeout = timeout;
+            duration = TimeSpan.Zero;
+            status = Status.Submitted;
         }
 
-        public IsModelRequest(FixedString extension)
+        public IsModelRequest(FixedString extension, FixedString address, TimeSpan timeout)
         {
             ThrowIfExtensionIsTooLong(extension.ToString().AsSpan());
 
-            this.version = default;
             this.extension = default;
             for (int i = 0; i < extension.Length; i++)
             {
                 this.extension |= (ulong)extension[(uint)i] << (i * 8);
             }
+
+            this.address = address;
+            this.timeout = timeout;
+            duration = TimeSpan.Zero;
+            status = Status.Submitted;
         }
 
-        public IsModelRequest(string extension) : this(extension.AsSpan())
+        public IsModelRequest(string extension, string address, TimeSpan timeout) : this(extension.AsSpan(), address, timeout)
         {
+        }
+
+        public readonly IsModelRequest BecomeLoaded()
+        {
+            IsModelRequest request = this;
+            request.status = Status.Loaded;
+            return request;
         }
 
         public readonly uint CopyExtensionBytes(USpan<byte> destination)
@@ -104,6 +122,14 @@ namespace Models.Components
             {
                 throw new ArgumentException("Extension is too long", nameof(extension));
             }
+        }
+
+        public enum Status : byte
+        {
+            Submitted,
+            Loading,
+            Loaded,
+            NotFound
         }
     }
 }

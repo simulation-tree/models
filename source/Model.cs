@@ -1,6 +1,4 @@
-﻿using Data;
-using Data.Components;
-using Meshes;
+﻿using Meshes;
 using Models.Components;
 using System;
 using Unmanaged;
@@ -8,50 +6,33 @@ using Worlds;
 
 namespace Models
 {
-    public readonly struct Model : IEntity
+    public readonly partial struct Model : IEntity
     {
-        private readonly Entity entity;
+        public readonly uint MeshCount => GetArrayLength<ModelMesh>();
 
-        public readonly uint MeshCount => entity.GetArrayLength<ModelMesh>();
         public readonly Mesh this[uint index]
         {
             get
             {
-                ModelMesh mesh = entity.GetArrayElement<ModelMesh>(index);
-                uint meshEntity = entity.GetReference(mesh.value);
-                return new Entity(entity.world, meshEntity).As<Mesh>();
+                ModelMesh mesh = GetArrayElement<ModelMesh>(index);
+                uint meshEntity = GetReference(mesh.value);
+                return new Entity(world, meshEntity).As<Mesh>();
             }
         }
-
-        readonly World IEntity.World => entity.world;
-        readonly uint IEntity.Value => entity.value;
-
-        readonly void IEntity.Describe(ref Archetype archetype)
-        {
-            archetype.AddComponentType<IsModel>();
-            archetype.AddArrayElementType<ModelMesh>();
-        }
-
-#if NET
-        [Obsolete("Default constructor not available", true)]
-        public Model()
-        {
-            throw new NotImplementedException();
-        }
-#endif
 
         /// <summary>
         /// Creates a request to load a model from the given <paramref name="address"/>.
         /// </summary>
-        public Model(World world, Address address)
+        public Model(World world, FixedString address, TimeSpan timeout = default)
         {
             FixedString extension = default;
-            if (address.value.TryLastIndexOf('.', out uint extensionIndex))
+            if (address.TryLastIndexOf('.', out uint extensionIndex))
             {
-                extension = address.value.Slice(extensionIndex + 1);
+                extension = address.Slice(extensionIndex + 1);
             }
 
-            entity = new Entity<IsDataRequest, IsModelRequest>(world, new(address), new(extension));
+            this.world = world;
+            value = world.CreateEntity(new IsModelRequest(extension, address, timeout));
         }
 
         /// <summary>
@@ -59,27 +40,25 @@ namespace Models
         /// </summary>
         public Model(World world, USpan<Mesh> meshes)
         {
-            entity = new Entity<IsModel>(world);
-            USpan<ModelMesh> array = entity.CreateArray<ModelMesh>(meshes.Length);
+            this.world = world;
+            value = world.CreateEntity(new IsModel());
+            USpan<ModelMesh> array = CreateArray<ModelMesh>(meshes.Length);
             for (uint i = 0; i < meshes.Length; i++)
             {
-                array[i] = new(entity.AddReference(meshes[i]));
+                array[i] = new(AddReference(meshes[i]));
             }
         }
 
-        public readonly void Dispose()
+        readonly void IEntity.Describe(ref Archetype archetype)
         {
-            entity.Dispose();
+            archetype.AddComponentType<IsModel>();
+            archetype.AddArrayType<ModelMesh>();
         }
+
 
         public readonly override string ToString()
         {
-            return entity.ToString();
-        }
-
-        public static implicit operator Entity(Model model)
-        {
-            return model.entity;
+            return value.ToString();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Models.Tests
         {
             using World world = CreateWorld();
             Model model = new(world, []);
-            Assert.That(model.Is(), Is.True);
+            Assert.That(model.IsCompliant, Is.True);
         }
     }
 }

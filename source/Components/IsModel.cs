@@ -3,13 +3,18 @@
 namespace Models.Components
 {
     [Component]
-    public struct IsModel
+    public readonly struct IsModel
     {
-        public uint version;
+        public readonly uint version;
 
         public IsModel(uint version)
         {
             this.version = version;
+        }
+
+        public readonly IsModel IncrementVersion()
+        {
+            return new IsModel(version + 1);
         }
     }
 }
