@@ -60,5 +60,10 @@ namespace Models
         {
             return value.ToString();
         }
+
+        public readonly FixedString GetName(Mesh mesh)
+        {
+            return mesh.GetComponent<ModelName>().value;
+        }
     }
 }
