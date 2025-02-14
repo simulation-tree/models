@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using Unmanaged;
-using Worlds;
 
 namespace Models.Components
 {
-    [Component]
     public struct IsModelRequest
     {
         public readonly ulong extension;

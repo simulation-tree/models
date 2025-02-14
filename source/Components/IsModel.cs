@@ -1,8 +1,5 @@
-﻿using Worlds;
-
-namespace Models.Components
+﻿namespace Models.Components
 {
-    [Component]
     public readonly struct IsModel
     {
         public readonly uint version;

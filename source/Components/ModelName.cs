@@ -1,13 +1,11 @@
 ﻿using Unmanaged;
-using Worlds;
 
 namespace Models.Components
 {
-    [Component]
     public readonly struct ModelName
     {
         public readonly FixedString value;
-        
+
         public ModelName(USpan<char> value)
         {
             this.value = new(value);
