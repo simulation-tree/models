@@ -42,7 +42,7 @@ namespace Models
         {
             this.world = world;
             value = world.CreateEntity(new IsModel());
-            USpan<ModelMesh> array = CreateArray<ModelMesh>(meshes.Length);
+            USpan<ModelMesh> array = CreateArray<ModelMesh>(meshes.Length).AsSpan();
             for (uint i = 0; i < meshes.Length; i++)
             {
                 array[i] = new(AddReference(meshes[i]));
