@@ -22,7 +22,7 @@ namespace Models.Components
                     char c = (char)((extension >> (i * 8)) & 0xFF);
                     if (c == default)
                     {
-                        return new FixedString(chars.Slice(0, (uint)i));
+                        return new FixedString(chars.GetSpan((uint)i));
                     }
 
                     chars[(uint)i] = c;
