@@ -7,12 +7,12 @@ namespace Models.Components
     public struct IsModelRequest
     {
         public readonly ulong extension;
-        public FixedString address;
+        public ASCIIText256 address;
         public TimeSpan timeout;
         public TimeSpan duration;
         public Status status;
 
-        public readonly FixedString Extension
+        public readonly ASCIIText256 Extension
         {
             get
             {
@@ -22,13 +22,13 @@ namespace Models.Components
                     char c = (char)((extension >> (i * 8)) & 0xFF);
                     if (c == default)
                     {
-                        return new FixedString(chars.GetSpan((uint)i));
+                        return new ASCIIText256(chars.GetSpan((uint)i));
                     }
 
                     chars[(uint)i] = c;
                 }
 
-                return new FixedString(chars);
+                return new ASCIIText256(chars);
             }
         }
 
@@ -38,7 +38,7 @@ namespace Models.Components
             throw new NotSupportedException();
         }
 
-        public IsModelRequest(USpan<char> extension, FixedString address, TimeSpan timeout)
+        public IsModelRequest(USpan<char> extension, ASCIIText256 address, TimeSpan timeout)
         {
             ThrowIfExtensionIsTooLong(extension);
 
@@ -54,7 +54,7 @@ namespace Models.Components
             status = Status.Submitted;
         }
 
-        public IsModelRequest(FixedString extension, FixedString address, TimeSpan timeout)
+        public IsModelRequest(ASCIIText256 extension, ASCIIText256 address, TimeSpan timeout)
         {
             ThrowIfExtensionIsTooLong(extension.ToString().AsSpan());
 

@@ -4,14 +4,14 @@ namespace Models.Components
 {
     public readonly struct ModelName
     {
-        public readonly FixedString value;
+        public readonly ASCIIText256 value;
 
         public ModelName(USpan<char> value)
         {
             this.value = new(value);
         }
 
-        public ModelName(FixedString value)
+        public ModelName(ASCIIText256 value)
         {
             this.value = value;
         }

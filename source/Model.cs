@@ -23,9 +23,9 @@ namespace Models
         /// <summary>
         /// Creates a request to load a model from the given <paramref name="address"/>.
         /// </summary>
-        public Model(World world, FixedString address, TimeSpan timeout = default)
+        public Model(World world, ASCIIText256 address, TimeSpan timeout = default)
         {
-            FixedString extension = default;
+            ASCIIText256 extension = default;
             if (address.TryLastIndexOf('.', out uint extensionIndex))
             {
                 extension = address.Slice(extensionIndex + 1);
@@ -61,7 +61,7 @@ namespace Models
             return value.ToString();
         }
 
-        public readonly FixedString GetName(Mesh mesh)
+        public readonly ASCIIText256 GetName(Mesh mesh)
         {
             return mesh.GetComponent<ModelName>().value;
         }
