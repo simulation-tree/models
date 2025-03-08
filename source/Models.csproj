@@ -10,9 +10,9 @@
         <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
         <WarningLevel>8</WarningLevel>
         <Authors>popcron</Authors>
-        <Company>game-simulations</Company>
+        <Company>simulation-tree</Company>
         <Title>Models</Title>
-        <RepositoryUrl>https://github.com/game-simulations/models</RepositoryUrl>
+        <RepositoryUrl>https://github.com/simulation-tree/models</RepositoryUrl>
         <PackageId/>
     </PropertyGroup>
 

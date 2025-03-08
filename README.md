@@ -1,5 +1,5 @@
 # Models
-Definitions for 3D models and the [meshes](https://github.com/game-simulations/meshes) that they contain.
+Definitions for 3D models and the [meshes](https://github.com/simulation-tree/meshes) that they contain.
 
 ### Importing models
 When models are imported, they will contain a list of meshes, each with their own data:
