@@ -1,4 +1,5 @@
-﻿using Unmanaged;
+﻿using System;
+using Unmanaged;
 
 namespace Models.Components
 {
@@ -6,7 +7,7 @@ namespace Models.Components
     {
         public readonly ASCIIText256 value;
 
-        public ModelName(USpan<char> value)
+        public ModelName(Span<char> value)
         {
             this.value = new(value);
         }

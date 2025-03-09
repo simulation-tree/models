@@ -16,16 +16,16 @@ namespace Models.Components
         {
             get
             {
-                USpan<char> chars = stackalloc char[8];
+                Span<char> chars = stackalloc char[8];
                 for (int i = 0; i < chars.Length; i++)
                 {
                     char c = (char)((extension >> (i * 8)) & 0xFF);
                     if (c == default)
                     {
-                        return new ASCIIText256(chars.GetSpan((uint)i));
+                        return new ASCIIText256(chars.Slice(0, i));
                     }
 
-                    chars[(uint)i] = c;
+                    chars[i] = c;
                 }
 
                 return new ASCIIText256(chars);
@@ -38,14 +38,14 @@ namespace Models.Components
             throw new NotSupportedException();
         }
 
-        public IsModelRequest(USpan<char> extension, ASCIIText256 address, TimeSpan timeout)
+        public IsModelRequest(ReadOnlySpan<char> extension, ASCIIText256 address, TimeSpan timeout)
         {
             ThrowIfExtensionIsTooLong(extension);
 
             this.extension = default;
             for (int i = 0; i < extension.Length; i++)
             {
-                this.extension |= (ulong)extension[(uint)i] << (i * 8);
+                this.extension |= (ulong)extension[i] << (i * 8);
             }
 
             this.address = address;
@@ -61,7 +61,7 @@ namespace Models.Components
             this.extension = default;
             for (int i = 0; i < extension.Length; i++)
             {
-                this.extension |= (ulong)extension[(uint)i] << (i * 8);
+                this.extension |= (ulong)extension[i] << (i * 8);
             }
 
             this.address = address;
@@ -81,40 +81,40 @@ namespace Models.Components
             return request;
         }
 
-        public readonly uint CopyExtensionBytes(USpan<byte> destination)
+        public readonly int CopyExtensionBytes(Span<byte> destination)
         {
             for (int i = 0; i < destination.Length; i++)
             {
                 byte b = (byte)((extension >> (i * 8)) & 0xFF);
                 if (b == default)
                 {
-                    return (uint)i;
+                    return i;
                 }
 
-                destination[(uint)i] = b;
+                destination[i] = b;
             }
 
             return default;
         }
 
-        public readonly uint CopyExtensionCharacters(USpan<char> destination)
+        public readonly int CopyExtensionCharacters(Span<char> destination)
         {
             for (int i = 0; i < destination.Length; i++)
             {
                 char c = (char)((extension >> (i * 8)) & 0xFF);
                 if (c == default)
                 {
-                    return (uint)i;
+                    return i;
                 }
 
-                destination[(uint)i] = c;
+                destination[i] = c;
             }
 
             return default;
         }
 
         [Conditional("DEBUG")]
-        private static void ThrowIfExtensionIsTooLong(USpan<char> extension)
+        private static void ThrowIfExtensionIsTooLong(ReadOnlySpan<char> extension)
         {
             if (extension.Length > sizeof(ulong))
             {

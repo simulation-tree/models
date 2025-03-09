@@ -8,9 +8,9 @@ namespace Models
 {
     public readonly partial struct Model : IEntity
     {
-        public readonly uint MeshCount => GetArrayLength<ModelMesh>();
+        public readonly int MeshCount => GetArrayLength<ModelMesh>();
 
-        public readonly Mesh this[uint index]
+        public readonly Mesh this[int index]
         {
             get
             {
@@ -26,7 +26,7 @@ namespace Models
         public Model(World world, ASCIIText256 address, TimeSpan timeout = default)
         {
             ASCIIText256 extension = default;
-            if (address.TryLastIndexOf('.', out uint extensionIndex))
+            if (address.TryLastIndexOf('.', out int extensionIndex))
             {
                 extension = address.Slice(extensionIndex + 1);
             }
@@ -38,12 +38,12 @@ namespace Models
         /// <summary>
         /// Creates a model with the given <paramref name="meshes"/>.
         /// </summary>
-        public Model(World world, USpan<Mesh> meshes)
+        public Model(World world, Span<Mesh> meshes)
         {
             this.world = world;
             value = world.CreateEntity(new IsModel());
-            USpan<ModelMesh> array = CreateArray<ModelMesh>(meshes.Length).AsSpan();
-            for (uint i = 0; i < meshes.Length; i++)
+            Span<ModelMesh> array = CreateArray<ModelMesh>(meshes.Length).AsSpan();
+            for (int i = 0; i < meshes.Length; i++)
             {
                 array[i] = new(AddReference(meshes[i]));
             }
