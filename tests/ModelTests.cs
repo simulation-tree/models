@@ -8,7 +8,7 @@ namespace Models.Tests
     {
         static ModelTests()
         {
-            TypeRegistry.Load<ModelsTypeBank>();
+            MetadataRegistry.Load<ModelsTypeBank>();
         }
 
         protected override Schema CreateSchema()
