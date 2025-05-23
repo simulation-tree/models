@@ -23,7 +23,7 @@ namespace Models
         /// <summary>
         /// Creates a request to load a model from the given <paramref name="address"/>.
         /// </summary>
-        public Model(World world, ASCIIText256 address, TimeSpan timeout = default)
+        public Model(World world, ASCIIText256 address, double timeout = default)
         {
             ASCIIText256 extension = default;
             if (address.TryLastIndexOf('.', out int extensionIndex))

@@ -7,8 +7,8 @@ namespace Models.Components
     {
         public readonly ASCIIText8 extension;
         public ASCIIText256 address;
-        public TimeSpan timeout;
-        public TimeSpan duration;
+        public double timeout;
+        public double duration;
         public Status status;
 
         [Obsolete("Default constructor not supported", true)]
@@ -17,26 +17,31 @@ namespace Models.Components
             throw new NotSupportedException();
         }
 
-        public IsModelRequest(ReadOnlySpan<char> extension, ASCIIText256 address, TimeSpan timeout)
+        public IsModelRequest(ReadOnlySpan<char> extension, ASCIIText256 address, double timeout)
         {
             this.extension = new(extension);
             this.address = address;
             this.timeout = timeout;
-            duration = TimeSpan.Zero;
+            duration = 0;
             status = Status.Submitted;
         }
 
-        public IsModelRequest(ASCIIText8 extension, ASCIIText256 address, TimeSpan timeout)
+        public IsModelRequest(ASCIIText8 extension, ASCIIText256 address, double timeout)
         {
             this.extension = extension;
             this.address = address;
             this.timeout = timeout;
-            duration = TimeSpan.Zero;
+            duration = 0;
             status = Status.Submitted;
         }
 
-        public IsModelRequest(string extension, string address, TimeSpan timeout) : this(extension.AsSpan(), address, timeout)
+        public IsModelRequest(string extension, string address, double timeout)
         {
+            this.extension = extension;
+            this.address = address;
+            this.timeout = timeout;
+            duration = 0;
+            status = Status.Submitted;
         }
 
         public readonly IsModelRequest BecomeLoaded()
