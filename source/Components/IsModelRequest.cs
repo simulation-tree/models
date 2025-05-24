@@ -44,13 +44,6 @@ namespace Models.Components
             status = Status.Submitted;
         }
 
-        public readonly IsModelRequest BecomeLoaded()
-        {
-            IsModelRequest request = this;
-            request.status = Status.Loaded;
-            return request;
-        }
-
         public readonly int CopyExtensionBytes(Span<byte> destination)
         {
             return extension.CopyTo(destination);
