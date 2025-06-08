@@ -14,7 +14,7 @@
     <Title>Models</Title>
     <RepositoryUrl>https://github.com/simulation-tree/models</RepositoryUrl>
     <IncludeBuildOutput>false</IncludeBuildOutput>
-    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <OutDir>bin/$(TargetFramework)/$(Configuration)</OutDir>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,11 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="bin/Debug/net9.0/Models.dll" Pack="true" PackagePath="tools/debug/Models.dll" Visible="false"/>
-    <Content Include="bin/Debug/net9.0/Models.xml" Pack="true" PackagePath="tools/debug/Models.xml" Visible="false" Condition="Exists('bin/Debug/net9.0/Models.xml')"/>
-    <Content Include="bin/Release/net9.0/Models.dll" Pack="true" PackagePath="tools/release/Models.dll" Visible="false"/>
-    <Content Include="bin/Release/net9.0/Models.xml" Pack="true" PackagePath="tools/release/Models.xml" Visible="false" Condition="Exists('bin/Release/net9.0/Models.xml')"/>
-    <Content Include="build/Models.targets" Pack="true" PackagePath="build/Models.targets" Visible="false"/>
+    <Content Include="bin/**/*" Pack="true" PackagePath="lib" Visible="false"/>
+    <Content Include="buildTransitive/**/*" Pack="true" PackagePath="buildTransitive"/>
   </ItemGroup>
 
 </Project>
