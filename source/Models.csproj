@@ -10,7 +10,7 @@
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
     <WarningLevel>8</WarningLevel>
     <Authors>popcron</Authors>
-    <Company>simulation-tree</Company>
+    <Company>Simulation Tree</Company>
     <Title>Models</Title>
     <RepositoryUrl>https://github.com/simulation-tree/models</RepositoryUrl>
     <IncludeBuildOutput>false</IncludeBuildOutput>
